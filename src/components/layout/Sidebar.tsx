@@ -1,10 +1,14 @@
 import { NavLink } from 'react-router-dom';
-import { Bell, Bookmark, Crown, Flame, Grid2X2, HeartHandshake, Home, MessageCircle, PlaySquare, Settings, User, Users } from 'lucide-react';
+import { Bell, Bookmark, CalendarDays, Crown, Flame, Grid2X2, HeartHandshake, Home, Map, MessageCircle, PlaySquare, Scissors, Search, Settings, ShoppingBag, User, Users } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { useLuhStore } from '../../store/useLuhStore';
 
 const nav = [
   { to: '/', label: 'Discover', icon: Home },
+  { to: '/search', label: 'Search', icon: Search },
+  { to: '/boutiques', label: 'Boutiques', icon: ShoppingBag },
+  { to: '/map', label: 'Near Me', icon: Map },
+  { to: '/stitching', label: 'Custom Stitching', icon: Scissors },
   { to: '/trending', label: 'Trending', icon: Flame },
   { to: '/following', label: 'Following', icon: Users },
   { to: '/saved', label: 'Saved', icon: Bookmark },
@@ -12,6 +16,7 @@ const nav = [
   { to: '/reels', label: 'Reels', icon: PlaySquare },
   { to: '/lookbook', label: 'Lookbook', icon: HeartHandshake },
   { to: '/designers', label: 'Designers', icon: Crown },
+  { to: '/bookings', label: 'Bookings', icon: CalendarDays },
   { to: '/messages', label: 'Messages', icon: MessageCircle },
   { to: '/notifications', label: 'Notifications', icon: Bell },
   { to: '/profile', label: 'Profile', icon: User },
@@ -29,7 +34,7 @@ export function Sidebar() {
           <div className="flex h-11 w-11 items-center justify-center rounded-full border border-champagne bg-champagne/10 text-xl font-serif text-gold">L</div>
           <div>
             <h1 className="font-serif text-3xl text-ink">Luh Style</h1>
-            <p className="text-xs text-charcoal/70">Discover. Save. Connect.</p>
+            <p className="text-xs text-charcoal/70">See. Find. Stitch.</p>
           </div>
         </div>
       </div>
@@ -58,8 +63,8 @@ export function Sidebar() {
         })}
       </nav>
       <div className="absolute bottom-6 left-5 right-5 rounded-lg border border-line bg-ivory p-5">
-        <p className="font-serif text-xl">Get inspired.</p>
-        <p className="mt-1 text-sm text-charcoal/70">Build boards and ask boutiques for details.</p>
+        <p className="font-serif text-xl">Get it stitched.</p>
+        <p className="mt-1 text-sm text-charcoal/70">Turn any saved design into a boutique order.</p>
       </div>
     </aside>
   );

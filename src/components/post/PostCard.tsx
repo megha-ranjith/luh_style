@@ -1,5 +1,6 @@
 import { Bookmark, Heart, MessageCircle, Pin, Send } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import type { Post } from '../../types';
 import { compactNumber } from '../../lib/utils';
 import { useLuhStore } from '../../store/useLuhStore';
@@ -51,6 +52,9 @@ export function PostCard({ post, dense = false }: { post: Post; dense?: boolean 
           </div>
           <div className="flex gap-2">
             <Button variant="ghost" className="h-9 w-9 px-0" aria-label="Share"><Send size={16} /></Button>
+            <Link to={`/stitch/${post.id}`}>
+              <Button className="h-9 px-3">Get This Stitched</Button>
+            </Link>
             <Button
               variant="outline"
               className="h-9 px-3"

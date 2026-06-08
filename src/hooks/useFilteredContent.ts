@@ -16,7 +16,17 @@ export function useFilteredContent() {
       return categoryMatch && queryMatch;
     });
     const filteredDesigners = designers.filter(
-      (designer) => !query || [designer.name, designer.location, designer.specialty, designer.handle].some(matchesQuery),
+      (designer) =>
+        !query ||
+        [
+          designer.name,
+          designer.location,
+          designer.area,
+          designer.specialty,
+          designer.handle,
+          ...designer.services,
+          ...designer.collections.flatMap((collection) => [collection.title, collection.description, ...collection.tags]),
+        ].some(matchesQuery),
     );
     const filteredBoards = boards.filter((board) => !query || [board.name, board.description].some(matchesQuery));
 

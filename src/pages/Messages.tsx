@@ -1,5 +1,6 @@
 import { FormEvent, useState } from 'react';
 import { Info, Phone, Send, Video } from 'lucide-react';
+import { useSearchParams } from 'react-router-dom';
 import { PageTitle } from '../components/common/PageTitle';
 import { Button } from '../components/ui/Button';
 import { Card } from '../components/ui/Card';
@@ -8,7 +9,8 @@ import { nowLabel } from '../lib/utils';
 
 export function Messages() {
   const { threads, designers, profile, sendMessage } = useLuhStore();
-  const [activeId, setActiveId] = useState(threads[0]?.id ?? '');
+  const [params] = useSearchParams();
+  const [activeId, setActiveId] = useState(params.get('thread') ?? threads[0]?.id ?? '');
   const [body, setBody] = useState('');
   const active = threads.find((thread) => thread.id === activeId) ?? threads[0];
   const designer = designers.find((item) => item.id === active?.participantId);

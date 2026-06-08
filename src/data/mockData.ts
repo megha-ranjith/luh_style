@@ -1,4 +1,4 @@
-import type { Board, CategoryTag, DesignerBoutique, HighlightItem, MessageThread, NotificationItem, Post, SettingsState, UserProfile } from '../types';
+import type { AppointmentBooking, Board, CategoryTag, DesignerBoutique, HighlightItem, MessageThread, NotificationItem, Post, SettingsState, StitchingRequest, UserProfile } from '../types';
 
 const img = (id: string) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=1200&q=85`;
 
@@ -16,6 +16,12 @@ export const profile: UserProfile = {
   stats: { posts: 128, followers: '48K', following: 112, saves: '1.2M' },
 };
 
+const reviews = [
+  { id: 'r1', author: 'Meera Nair', rating: 5, body: 'The fitting was precise and the finish felt boutique-grade.', createdAt: new Date(Date.now() - 5 * 86400000).toISOString() },
+  { id: 'r2', author: 'Rhea Kapoor', rating: 5, body: 'They translated my saved inspiration into a wearable festive outfit.', createdAt: new Date(Date.now() - 12 * 86400000).toISOString() },
+  { id: 'r3', author: 'Anika Rao', rating: 4, body: 'Clear consultation, beautiful fabric options, and timely delivery.', createdAt: new Date(Date.now() - 18 * 86400000).toISOString() },
+];
+
 export const designers: DesignerBoutique[] = [
   {
     id: 'label-ananya',
@@ -24,10 +30,27 @@ export const designers: DesignerBoutique[] = [
     avatar: img('photo-1496747611176-843222e1e57c'),
     cover: img('photo-1610030469983-98e550d6193c'),
     location: 'Koramangala, Bangalore',
-    specialty: 'Hand-embroidered bridal lehengas',
+    area: 'Koramangala',
+    distanceKm: 2.1,
+    specialty: 'Elevated ethnic wear and hand-embroidered bridal lehengas',
     followers: '48K',
     rating: 4.9,
+    reviewCount: 325,
     verified: true,
+    phone: '+91 98765 43210',
+    email: 'hello@labelananya.in',
+    hours: '10:00 AM - 8:00 PM',
+    services: ['Custom Stitching', 'Kurti Specialist', 'Bridal Lehenga', 'Embroidery', 'Alterations'],
+    collections: [
+      { id: 'c1', title: 'Champagne Bridal', description: 'Soft gold ceremony lehengas with heirloom handwork.', image: img('photo-1610030469983-98e550d6193c'), priceFrom: 18500, tags: ['bridal', 'lehenga', 'zari'] },
+      { id: 'c2', title: 'Kurthi Atelier', description: 'Tailored festive kurthis with premium lining.', image: img('photo-1603252109303-2751441dd157'), priceFrom: 4200, tags: ['kurthi', 'custom stitching'] },
+    ],
+    reviews,
+    coordinates: { lat: 12.9352, lng: 77.6245 },
+    priceRange: 'Rs 4,200 - Rs 48,000',
+    turnaround: '7-21 days',
+    womenOwned: true,
+    codAvailable: true,
     portfolio: [img('photo-1610030469983-98e550d6193c'), img('photo-1612336307429-8a898d10e223'), img('photo-1594736797933-d0501ba2fe65')],
   },
   {
@@ -37,10 +60,27 @@ export const designers: DesignerBoutique[] = [
     avatar: img('photo-1524504388940-b1c1722653e1'),
     cover: img('photo-1622122201714-77da0ca8e5d2'),
     location: 'Jayanagar, Bangalore',
+    area: 'Jayanagar',
+    distanceKm: 3.4,
     specialty: 'Sarees, drapes, and occasion styling',
     followers: '56.4K',
     rating: 4.8,
+    reviewCount: 189,
     verified: true,
+    phone: '+91 98876 54321',
+    email: 'care@thesilkroom.in',
+    hours: '10:30 AM - 8:30 PM',
+    services: ['Custom Stitching', 'Saree Blouses', 'Drape Styling', 'Premium Fabrics', 'Wedding Consultation'],
+    collections: [
+      { id: 'c3', title: 'Pastel Saree Edit', description: 'Quiet luxury sarees and stitched blouses.', image: img('photo-1622122201714-77da0ca8e5d2'), priceFrom: 6200, tags: ['saree', 'pastel', 'blouse'] },
+      { id: 'c4', title: 'Antique Zari', description: 'Traditional zari borders with modern silhouettes.', image: img('photo-1591369822096-ffd140ec948f'), priceFrom: 7600, tags: ['zari', 'occasionwear'] },
+    ],
+    reviews,
+    coordinates: { lat: 12.925, lng: 77.5938 },
+    priceRange: 'Rs 3,800 - Rs 32,000',
+    turnaround: '5-14 days',
+    womenOwned: true,
+    codAvailable: false,
     portfolio: [img('photo-1622122201714-77da0ca8e5d2'), img('photo-1591369822096-ffd140ec948f'), img('photo-1609357605129-26f69add5d6e')],
   },
   {
@@ -50,10 +90,27 @@ export const designers: DesignerBoutique[] = [
     avatar: img('photo-1534528741775-53994a69daeb'),
     cover: img('photo-1603252109303-2751441dd157'),
     location: 'Banashankari, Bangalore',
+    area: 'Banashankari',
+    distanceKm: 4.2,
     specialty: 'Festive kurtis and made-to-measure sets',
     followers: '22K',
     rating: 4.7,
+    reviewCount: 256,
     verified: true,
+    phone: '+91 98450 11223',
+    email: 'info@vaaniboutique.in',
+    hours: '11:00 AM - 8:00 PM',
+    services: ['Custom Stitching', 'Kurthi Specialist', 'Office Wear', 'Festive Sets', 'Bespoke Tailoring'],
+    collections: [
+      { id: 'c5', title: 'Golden Kurthi Studio', description: 'Daily-to-festive kurthis stitched to your measurements.', image: img('photo-1603252109303-2751441dd157'), priceFrom: 2800, tags: ['kurthi', 'festive', 'cotton silk'] },
+      { id: 'c6', title: 'Reception Glow', description: 'Soft gold anarkalis and partywear sets.', image: img('photo-1509631179647-0177331693ae'), priceFrom: 9800, tags: ['anarkali', 'partywear'] },
+    ],
+    reviews,
+    coordinates: { lat: 12.9255, lng: 77.5468 },
+    priceRange: 'Rs 2,800 - Rs 24,000',
+    turnaround: '4-12 days',
+    womenOwned: false,
+    codAvailable: true,
     portfolio: [img('photo-1603252109303-2751441dd157'), img('photo-1509631179647-0177331693ae'), img('photo-1617922001439-4a2e6562f328')],
   },
   {
@@ -63,10 +120,27 @@ export const designers: DesignerBoutique[] = [
     avatar: img('photo-1502823403499-6ccfcf4fb453'),
     cover: img('photo-1502716119720-b23a93e5fe1b'),
     location: 'Indiranagar, Bangalore',
+    area: 'Indiranagar',
+    distanceKm: 5.3,
     specialty: 'Minimal ivory gowns and resort edits',
     followers: '31K',
     rating: 4.8,
+    reviewCount: 208,
     verified: false,
+    phone: '+91 97311 77890',
+    email: 'hello@threadtales.in',
+    hours: '10:00 AM - 7:30 PM',
+    services: ['Custom Stitching', 'Gowns', 'Resort Wear', 'Design Consultation', 'Express Alterations'],
+    collections: [
+      { id: 'c7', title: 'Ivory Lookbook', description: 'Minimal gowns and tonal embroidery.', image: img('photo-1502716119720-b23a93e5fe1b'), priceFrom: 7200, tags: ['gown', 'minimal'] },
+      { id: 'c8', title: 'Soft Occasion Sets', description: 'Modern ethnic coordinates for intimate functions.', image: img('photo-1483985988355-763728e1935b'), priceFrom: 5400, tags: ['co-ord', 'occasionwear'] },
+    ],
+    reviews,
+    coordinates: { lat: 12.9784, lng: 77.6408 },
+    priceRange: 'Rs 5,400 - Rs 28,000',
+    turnaround: '6-16 days',
+    womenOwned: true,
+    codAvailable: true,
     portfolio: [img('photo-1502716119720-b23a93e5fe1b'), img('photo-1483985988355-763728e1935b'), img('photo-1529139574466-a303027c1d8b')],
   },
   {
@@ -76,10 +150,27 @@ export const designers: DesignerBoutique[] = [
     avatar: img('photo-1517841905240-472988babdf9'),
     cover: img('photo-1512436991641-6745cdb1723f'),
     location: 'Whitefield, Bangalore',
+    area: 'Whitefield',
+    distanceKm: 7.6,
     specialty: 'Textile details and handwork',
     followers: '19K',
     rating: 4.6,
+    reviewCount: 143,
     verified: true,
+    phone: '+91 96112 33445',
+    email: 'connect@stitchandsage.com',
+    hours: '11:00 AM - 8:00 PM',
+    services: ['Custom Stitching', 'Embroidery', 'Handblock Prints', 'Fabric Sourcing', 'Kurti Specialist'],
+    collections: [
+      { id: 'c9', title: 'Handwork Details', description: 'Embroidery-led inspiration translated into tailored pieces.', image: img('photo-1512436991641-6745cdb1723f'), priceFrom: 3600, tags: ['embroidery', 'handwork'] },
+      { id: 'c10', title: 'Workwear Kurtis', description: 'Clean office kurtis with polished finishing.', image: img('photo-1485462537746-965f33f7f6a7'), priceFrom: 2400, tags: ['kurthi', 'office wear'] },
+    ],
+    reviews,
+    coordinates: { lat: 12.9698, lng: 77.75 },
+    priceRange: 'Rs 2,400 - Rs 18,000',
+    turnaround: '5-10 days',
+    womenOwned: false,
+    codAvailable: true,
     portfolio: [img('photo-1512436991641-6745cdb1723f'), img('photo-1515886657613-9f3515b0c78f'), img('photo-1485462537746-965f33f7f6a7')],
   },
 ];
@@ -162,3 +253,31 @@ export const settings: SettingsState = {
   defaultBoardId: 'b1',
   preferredCategories: ['Bridal', 'Sarees', 'Kurtis'],
 };
+
+export const appointmentBookings: AppointmentBooking[] = [
+  {
+    id: 'a1',
+    boutiqueId: 'label-ananya',
+    date: new Date(Date.now() + 3 * 86400000).toISOString().slice(0, 10),
+    time: '11:30',
+    service: 'Bridal consultation',
+    notes: 'Discuss champagne lehenga inspiration and fabric options.',
+    status: 'confirmed',
+    createdAt: new Date(Date.now() - 86400000).toISOString(),
+  },
+];
+
+export const stitchingRequests: StitchingRequest[] = [
+  {
+    id: 's1',
+    postId: 'p3',
+    boutiqueId: 'vaani',
+    service: 'Custom kurthi stitching',
+    measurements: 'Saved profile measurements',
+    budget: 'Rs 4,000 - Rs 6,000',
+    eventDate: new Date(Date.now() + 14 * 86400000).toISOString().slice(0, 10),
+    notes: 'Use the golden kurti as inspiration with three-quarter sleeves.',
+    status: 'quoted',
+    createdAt: new Date(Date.now() - 2 * 86400000).toISOString(),
+  },
+];

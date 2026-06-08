@@ -35,11 +35,45 @@ export interface DesignerBoutique {
   avatar: string;
   cover: string;
   location: string;
+  area: string;
+  distanceKm: number;
   specialty: string;
   followers: string;
   rating: number;
+  reviewCount: number;
   verified: boolean;
+  phone: string;
+  email: string;
+  hours: string;
+  services: string[];
+  collections: Collection[];
+  reviews: Review[];
+  coordinates: {
+    lat: number;
+    lng: number;
+  };
+  priceRange: string;
+  turnaround: string;
+  womenOwned: boolean;
+  codAvailable: boolean;
   portfolio: string[];
+}
+
+export interface Collection {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  priceFrom: number;
+  tags: string[];
+}
+
+export interface Review {
+  id: string;
+  author: string;
+  rating: number;
+  body: string;
+  createdAt: string;
 }
 
 export interface Post {
@@ -91,6 +125,30 @@ export interface NotificationItem {
   read: boolean;
   actorId?: string;
   postId?: string;
+}
+
+export interface AppointmentBooking {
+  id: string;
+  boutiqueId: string;
+  date: string;
+  time: string;
+  service: string;
+  notes: string;
+  status: 'requested' | 'confirmed' | 'completed';
+  createdAt: string;
+}
+
+export interface StitchingRequest {
+  id: string;
+  postId: string;
+  boutiqueId: string;
+  service: string;
+  measurements: string;
+  budget: string;
+  eventDate: string;
+  notes: string;
+  status: 'draft' | 'sent' | 'quoted' | 'booked';
+  createdAt: string;
 }
 
 export interface HighlightItem {

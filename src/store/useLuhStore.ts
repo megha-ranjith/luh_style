@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { boards, designers, messageThreads, notifications, posts, profile, settings } from '../data/mockData';
-import type { Board, CategoryTag, DesignerBoutique, MessageThread, NotificationItem, Post, SettingsState, UserProfile } from '../types';
+import { appointmentBookings, boards, designers, messageThreads, notifications, posts, profile, settings, stitchingRequests } from '../data/mockData';
+import type { AppointmentBooking, Board, CategoryTag, DesignerBoutique, MessageThread, NotificationItem, Post, SettingsState, StitchingRequest, UserProfile } from '../types';
 
 interface LuhState {
   profile: UserProfile;
@@ -10,6 +10,8 @@ interface LuhState {
   boards: Board[];
   threads: MessageThread[];
   notifications: NotificationItem[];
+  appointments: AppointmentBooking[];
+  stitchingRequests: StitchingRequest[];
   settings: SettingsState;
   likedPostIds: string[];
   savedPostIds: string[];
@@ -26,6 +28,10 @@ interface LuhState {
   deleteBoard: (boardId: string) => void;
   pinToBoard: (postId: string, boardId: string) => void;
   sendMessage: (threadId: string, body: string) => void;
+  ensureThread: (boutiqueId: string) => string;
+  createAppointment: (input: Omit<AppointmentBooking, 'id' | 'status' | 'createdAt'>) => void;
+  createStitchingRequest: (input: Omit<StitchingRequest, 'id' | 'status' | 'createdAt'>) => void;
+  updateStitchingRequest: (requestId: string, patch: Partial<StitchingRequest>) => void;
   markNotificationRead: (id: string) => void;
   markAllNotificationsRead: () => void;
   updateProfile: (patch: Partial<UserProfile>) => void;
@@ -41,6 +47,8 @@ export const useLuhStore = create<LuhState>()(
       boards,
       threads: messageThreads,
       notifications,
+      appointments: appointmentBookings,
+      stitchingRequests,
       settings,
       likedPostIds: ['p1', 'p4'],
       savedPostIds: ['p1', 'p2', 'p5'],
@@ -111,6 +119,90 @@ export const useLuhStore = create<LuhState>()(
               : thread,
           ),
         })),
+      ensureThread: (boutiqueId) => {
+        let threadId = '';
+        set((state) => {
+          const existing = state.threads.find((thread) => thread.participantId === boutiqueId);
+          if (existing) {
+            threadId = existing.id;
+            return state;
+          }
+          threadId = crypto.randomUUID();
+          return {
+            threads: [
+              ...state.threads,
+              {
+                id: threadId,
+                participantId: boutiqueId,
+                unread: 0,
+                messages: [
+                  {
+                    id: crypto.randomUUID(),
+                    senderId: boutiqueId,
+                    body: 'Thanks for reaching out through Luh Style. Share your inspiration or appointment preference and we will help with the next step.',
+                    createdAt: new Date().toISOString(),
+                  },
+                ],
+              },
+            ],
+          };
+        });
+        return threadId;
+      },
+      createAppointment: (input) =>
+        set((state) => ({
+          appointments: [
+            {
+              ...input,
+              id: crypto.randomUUID(),
+              status: 'requested',
+              createdAt: new Date().toISOString(),
+            },
+            ...state.appointments,
+          ],
+          notifications: [
+            {
+              id: crypto.randomUUID(),
+              type: 'order',
+              title: 'Appointment requested',
+              body: 'Your boutique appointment request has been saved.',
+              createdAt: new Date().toISOString(),
+              read: false,
+              actorId: input.boutiqueId,
+            },
+            ...state.notifications,
+          ],
+        })),
+      createStitchingRequest: (input) =>
+        set((state) => ({
+          savedPostIds: state.savedPostIds.includes(input.postId) ? state.savedPostIds : [...state.savedPostIds, input.postId],
+          stitchingRequests: [
+            {
+              ...input,
+              id: crypto.randomUUID(),
+              status: 'sent',
+              createdAt: new Date().toISOString(),
+            },
+            ...state.stitchingRequests,
+          ],
+          notifications: [
+            {
+              id: crypto.randomUUID(),
+              type: 'order',
+              title: 'Stitching request sent',
+              body: 'Your inspiration has been converted into a boutique request.',
+              createdAt: new Date().toISOString(),
+              read: false,
+              actorId: input.boutiqueId,
+              postId: input.postId,
+            },
+            ...state.notifications,
+          ],
+        })),
+      updateStitchingRequest: (requestId, patch) =>
+        set((state) => ({
+          stitchingRequests: state.stitchingRequests.map((request) => (request.id === requestId ? { ...request, ...patch } : request)),
+        })),
       markNotificationRead: (id) =>
         set((state) => ({ notifications: state.notifications.map((item) => (item.id === id ? { ...item, read: true } : item)) })),
       markAllNotificationsRead: () => set((state) => ({ notifications: state.notifications.map((item) => ({ ...item, read: true })) })),
@@ -124,6 +216,8 @@ export const useLuhStore = create<LuhState>()(
         boards: state.boards,
         threads: state.threads,
         notifications: state.notifications,
+        appointments: state.appointments,
+        stitchingRequests: state.stitchingRequests,
         settings: state.settings,
         likedPostIds: state.likedPostIds,
         savedPostIds: state.savedPostIds,

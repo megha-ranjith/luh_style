@@ -1,4 +1,7 @@
-import { ArrowUpRight, CalendarHeart, Sparkles } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { ArrowUpRight, CalendarHeart, MapPin, Scissors, Sparkles } from 'lucide-react';
+import { BoutiqueCard } from '../components/boutique/BoutiqueCard';
+import { MapPanel } from '../components/boutique/MapPanel';
 import { categories } from './helpers';
 import { useFilteredContent } from '../hooks/useFilteredContent';
 import { useLuhStore } from '../store/useLuhStore';
@@ -17,7 +20,23 @@ export function Discover() {
   return (
     <div className="grid gap-6 2xl:grid-cols-[1fr_340px]">
       <div>
-        <PageTitle title="Discover" subtitle="A calm feed of boutique looks, designer stories, reels, and boards." />
+        <PageTitle
+          title="Discover"
+          subtitle="See a design, find a nearby boutique, and get it stitched from one unified fashion ecosystem."
+          action={<Link to="/search?q=kurthi"><Button><Scissors size={16} /> Search kurthi</Button></Link>}
+        />
+        <section className="mb-8 grid gap-4 md:grid-cols-3">
+          {[
+            ['Discover inspiration', 'Browse posts, reels, boards, and lookbooks from boutiques.'],
+            ['Find boutiques nearby', 'Compare services, distance, reviews, collections, and availability.'],
+            ['Convert into orders', 'Send any saved inspiration as a custom stitching request.'],
+          ].map(([title, body]) => (
+            <Card key={title} className="p-5">
+              <p className="font-serif text-2xl">{title}</p>
+              <p className="mt-2 text-sm text-charcoal/70">{body}</p>
+            </Card>
+          ))}
+        </section>
         <section className="mb-8">
           <div className="mb-4 flex items-center justify-between">
             <h3 className="flex items-center gap-2 font-serif text-2xl"><ArrowUpRight className="text-gold" /> Trending Now</h3>
@@ -58,6 +77,13 @@ export function Discover() {
         </div>
       </div>
       <aside className="space-y-5">
+        <MapPanel boutiques={designers} />
+        <Card className="p-5">
+          <h3 className="mb-4 flex items-center gap-2 font-serif text-2xl"><MapPin className="text-gold" /> Nearby for Custom Stitching</h3>
+          <div className="space-y-4">
+            {designers.slice(0, 2).map((designer) => <BoutiqueCard key={designer.id} boutique={designer} compact />)}
+          </div>
+        </Card>
         <Card className="p-5">
           <h3 className="font-serif text-2xl">Story Highlights</h3>
           <div className="mt-4 grid grid-cols-3 gap-3">

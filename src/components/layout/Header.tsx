@@ -1,9 +1,11 @@
 import { Bell, Heart, MapPin, Search, SlidersHorizontal } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useLuhStore } from '../../store/useLuhStore';
 import { Button } from '../ui/Button';
 
 export function Header() {
   const { profile, searchQuery, setSearchQuery, notifications } = useLuhStore();
+  const navigate = useNavigate();
   const unread = notifications.some((item) => !item.read);
 
   return (
@@ -14,7 +16,10 @@ export function Header() {
           <input
             value={searchQuery}
             onChange={(event) => setSearchQuery(event.target.value)}
-            placeholder="Search styles, boutiques, boards, tags..."
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') navigate(`/search?q=${encodeURIComponent(searchQuery || 'kurthi')}`);
+            }}
+            placeholder="Search kurthi, bridal, boutiques, designers..."
             className="h-12 w-full rounded-full border border-line bg-white px-12 text-sm text-ink shadow-sm placeholder:text-charcoal/45"
             aria-label="Search Luh Style"
           />
